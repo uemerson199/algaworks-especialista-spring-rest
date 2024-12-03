@@ -1,0 +1,95 @@
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+*.swp
+*.swo
+
+# Arquivos de log
+*.log
+*.out
+*.err
+
+# Build e dependências
+/target/
+build/
+/out/
+/*.war
+/*.jar
+
+# Configurações de IDEs
+# IntelliJ IDEA
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# VS Code
+.vscode/
+
+# Arquivos do Maven
+.mvn/
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+
+# Arquivos do Gradle
+.gradle/
+build/
+*.gradle.kts
+gradle-app.setting
+!gradle-wrapper.jar
+
+# Configurações de controle de versões internas do Git
+.git/
+!.gitignore
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.bak
+*.swp
+
+# Banco de Dados e Arquivos Sensíveis
+*.db
+*.sql
+*.sqlite
+*.env
+
+# Configurações de Contêiner (Docker)
+*.pid
+*.seed
+*.lock
+node_modules/
+
+# Teste de Unidade e Relatórios
+/test-output/
+/jacoco/
+*.coverage
+/target/site/
+/target/cucumber-html-reports/
+/target/surefire-reports/
+
+# Outros arquivos temporários específicos do Spring
+*.class
+*.h2.db
+*.mv.db
+*.db.*
+*.log.*
+spring.log
+
+
+
+# Ignorar o arquivo de configurações sensíveis
+application.properties
+.env
+
