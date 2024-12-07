@@ -27,20 +27,20 @@ import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 public class CozinhaController {
 
 	@Autowired
-	private CozinhaRepository repository;
+	private CozinhaRepository cozinhaRepository;
 
 	@Autowired
 	private CadastroCozinhaService service;
 
 	@GetMapping
 	public List<Cozinha> listar() {
-		return repository.listar();
+		return cozinhaRepository.listar();
 	}
 
 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Cozinha> buscar(@PathVariable Long id) {
-		Cozinha cozinha = repository.buscar(id);
+		Cozinha cozinha = cozinhaRepository.buscar(id);
 
 		if (cozinha != null) {
 			return ResponseEntity.ok(cozinha);
@@ -58,7 +58,7 @@ public class CozinhaController {
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Cozinha> atualizar(@PathVariable Long id, @RequestBody Cozinha cozinha) {
-		Cozinha cozinhaAtual = repository.buscar(id);
+		Cozinha cozinhaAtual = cozinhaRepository.buscar(id);
 
 		if (cozinhaAtual != null) {
 			// cozinhaAtual.setNome(cozinha.getNome());
