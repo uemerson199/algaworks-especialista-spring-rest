@@ -116,7 +116,7 @@ public class RestauranteController {
 			
 			Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
 			
-			System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
+		//	System.out.println(nomePropriedade + " = " + valorPropriedade + " = " + novoValor);
 			
 	    	ReflectionUtils.setField(field, restauranteDetino, novoValor);
 		});
