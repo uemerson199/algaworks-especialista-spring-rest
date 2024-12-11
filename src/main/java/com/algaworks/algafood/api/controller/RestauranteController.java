@@ -3,6 +3,7 @@ package com.algaworks.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,15 +37,15 @@ public class RestauranteController {
 	
 	@GetMapping
 	public List<Restaurante> listar() {
-		return restaurauranteRepository.listar();
+		return restaurauranteRepository.findAll();
 	}
 	 
 	@GetMapping(value = "/{id}")
 	public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
-		Restaurante restaurante = restaurauranteRepository.buscar(id);
+		Optional<Restaurante> restaurante = restaurauranteRepository.findById(id);
 		
-		if (restaurante != null) {
-			return ResponseEntity.ok(restaurante);
+		if (restaurante.isPresent()) {
+			return ResponseEntity.ok(restaurante.get());
 		}
 		
 		return ResponseEntity.notFound().build();
@@ -69,13 +70,13 @@ public class RestauranteController {
 	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
 		
 		try {
-			Restaurante restauranteAtual = restaurauranteRepository.buscar(id);
+			Optional<Restaurante> restauranteAtual = restaurauranteRepository.findById(id);
 			
-			if (restauranteAtual != null) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+			if (restauranteAtual.isPresent()) {
+				BeanUtils.copyProperties(restaurante, restauranteAtual.get(), "id");
 				
-				restauranteAtual = restauranteService.salvar(restauranteAtual);
-				return ResponseEntity.ok(restauranteAtual);
+				Restaurante restauranteSalvo = restauranteService.salvar(restauranteAtual.get());
+				return ResponseEntity.ok(restauranteSalvo);
 			}
 			
 			return ResponseEntity.notFound().build();
@@ -91,15 +92,15 @@ public class RestauranteController {
 	public ResponseEntity<?> atualizarParcial(@PathVariable Long id,
 			@RequestBody Map<String, Object> campos) {
 		
-		Restaurante restauranteAtual = restaurauranteRepository.buscar(id);
+		Optional<Restaurante> restauranteAtual = restaurauranteRepository.findById(id);
 		
-		if (restauranteAtual == null) {
+		if (restauranteAtual.isEmpty()) {
 			return ResponseEntity.notFound().build();
 		}
 		
-		merge(campos, restauranteAtual);
+		merge(campos, restauranteAtual.get());
 		
-		return atualizar(id, restauranteAtual);
+		return atualizar(id, restauranteAtual.get());
 		
 	}
 
