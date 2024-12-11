@@ -12,7 +12,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 public interface CozinhaRepository extends JpaRepository<Cozinha, Long> {
 
 	
-	List<Cozinha> findTodasBynome(String nome);
+	List<Cozinha> findByNomeContaining(String nome);
 	
 	Optional<Cozinha> findByNome(String nome);
 	
