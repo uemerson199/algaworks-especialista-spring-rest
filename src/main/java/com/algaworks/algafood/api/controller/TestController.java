@@ -34,14 +34,24 @@ public class TestController {
 		return cozinhaRepository.findByNome(nome);
 	}
 	
+	@GetMapping("/cozinhas/exists")
+	public boolean cozinhaExists(String nome) {
+		return cozinhaRepository.existsByNome(nome);
+	}
+	
 	@GetMapping("/restaurantes/por-taxa-frete")
 	public List<Restaurante> restaurantePorTaxaFrete(BigDecimal taxaInicial, BigDecimal taxaFinal) {
-		return restauranteRepository.findByTaxaFreteBetween(taxaInicial, taxaFinal);
+		return restauranteRepository.queryByTaxaFreteBetween(taxaInicial, taxaFinal);
 	}
 	
 	@GetMapping("/restaurantes/por-nome-id")
-	public List<Restaurante> restaurantePorTaxaFrete(String nome, Long cozinhaId) {
+	public List<Restaurante> restaurantePrimeiroPorNome(String nome, Long cozinhaId) {
 		return restauranteRepository.findByNomeContainingAndCozinhaId(nome, cozinhaId);
+	}
+	
+	@GetMapping("/restaurantes/top2-por-nome")
+	public List<Restaurante> restauranteTop2PorNome(String nome) {
+		return restauranteRepository.findTop2ByNomeContaining(nome);
 	}
 	
 	
