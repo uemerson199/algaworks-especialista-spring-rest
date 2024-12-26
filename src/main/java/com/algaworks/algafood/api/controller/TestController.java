@@ -13,10 +13,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComFreteGratisSpec;
-import com.algaworks.algafood.infrastructure.repository.spec.RestauranteComNomeSemelhanteSpec;
-
-import lombok.experimental.var;
+import com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs;
 
 @RestController
 @RequestMapping("/teste")
@@ -65,10 +62,9 @@ public class TestController {
 	
 	@GetMapping("/restaurantes/com-frete-gratis")
 	public List<Restaurante> restaurantesComFreteGratis(String nome) {
-		var comFreteGratis = new RestauranteComFreteGratisSpec();
-		var comNomeSemelhante = new RestauranteComNomeSemelhanteSpec(nome);
 		
-		return restauranteRepository.findAll(comFreteGratis.and(comNomeSemelhante));
+		return restauranteRepository.findAll(RestauranteSpecs.comNomeSemelhante(nome)
+				.and(RestauranteSpecs.comFreteGratis()));
 	}
 	
 }
