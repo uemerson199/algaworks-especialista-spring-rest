@@ -34,4 +34,5 @@ public class Grupo {
 	        inverseJoinColumns = @JoinColumn(name = "permissao_id"))
 	private List<Permissao> permissoes =  new ArrayList<>();
 
+
 }
