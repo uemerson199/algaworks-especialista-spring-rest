@@ -3,13 +3,12 @@ package com.algaworks.algafood.api.controller;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -42,67 +40,46 @@ public class RestauranteController {
 	}
 	 
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<Restaurante> buscar(@PathVariable Long id) {
-		Optional<Restaurante> restaurante = restaurauranteRepository.findById(id);
-		
-		if (restaurante.isPresent()) {
-			return ResponseEntity.ok(restaurante.get());
-		}
-		
-		return ResponseEntity.notFound().build();
+	public Restaurante buscar(@PathVariable Long id) {
+		return restauranteService.buscarOuFalhar(id);
 	}
 	
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
-		try {
-			   restaurante = restauranteService.salvar(restaurante);
-			   
-			   return ResponseEntity.status(HttpStatus.CREATED)
-					   .body(restaurante);
-			   
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest().body(e.getMessage());
-		}
-		
+	public Restaurante adicionar(@RequestBody Restaurante restaurante) {
+		return restauranteService.salvar(restaurante);
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
+	public Restaurante atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
 		
-		try {
-			Optional<Restaurante> restauranteAtual = restaurauranteRepository.findById(id);
+		 Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
 			
-			if (restauranteAtual.isPresent()) {
-				BeanUtils.copyProperties(restaurante, restauranteAtual, 
+			
+		 BeanUtils.copyProperties(restaurante, restauranteAtual, 
 				        "id", "formasPagamento", "endereco", "dataCadastro", "produtos");
+		 
+		 return restauranteService.salvar(restauranteAtual);
 				
-				Restaurante restauranteSalvo = restauranteService.salvar(restauranteAtual.get());
-				return ResponseEntity.ok(restauranteSalvo);
-			}
 			
-			return ResponseEntity.notFound().build();
-		
-		} catch (EntidadeNaoEncontradaException e) {
-			return ResponseEntity.badRequest()
-					.body(e.getMessage());
-		}
-		
+	}
+	
+	
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void remover(@PathVariable long id) {
+		restauranteService.excluir(id);
 	}
 	
 	@PatchMapping("/{id}")
-	public ResponseEntity<?> atualizarParcial(@PathVariable Long id,
+	public Restaurante atualizarParcial(@PathVariable Long id,
 			@RequestBody Map<String, Object> campos) {
 		
-		Optional<Restaurante> restauranteAtual = restaurauranteRepository.findById(id);
+		Restaurante restauranteAtual = restauranteService.buscarOuFalhar(id);
 		
-		if (restauranteAtual.isEmpty()) {
-			return ResponseEntity.notFound().build();
-		}
+		merge(campos, restauranteAtual);
 		
-		merge(campos, restauranteAtual.get());
-		
-		return atualizar(id, restauranteAtual.get());
+		return atualizar(id, restauranteAtual);
 		
 	}
 
@@ -124,6 +101,8 @@ public class RestauranteController {
 	    	ReflectionUtils.setField(field, restauranteDetino, novoValor);
 		});
 	}
+	
+	
 	
 
 }

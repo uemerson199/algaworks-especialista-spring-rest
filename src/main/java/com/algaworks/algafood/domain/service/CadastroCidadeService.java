@@ -15,6 +15,10 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 @Service
 public class CadastroCidadeService {
 	
+	private static final String MSG_ESTADO_NAO_ENCONTRADO = "Não existe cadastro de estado com esse código %d";
+
+	private static final String MSG_CIDADE_NAO_ENCONTRADA = "A cidade de id %d, não foi encontrada.";
+
 	@Autowired
 	private CidadeRepository cidadeRepository;
 
@@ -28,7 +32,7 @@ public class CadastroCidadeService {
 		
 		if (estado.isEmpty()) {
 			throw new EntidadeNaoEncontradaException( 
-					String.format("Não existe cadastro de estado com esse código %d", estadoId));
+					String.format(MSG_ESTADO_NAO_ENCONTRADO, estadoId));
 		}
 		
 		cidade.setEstado(estado.get());
@@ -41,11 +45,17 @@ public class CadastroCidadeService {
 		try {
 			cidadeRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(String.format("O Restaurante de id %d, não foi encontrado", id));
+			throw new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_ENCONTRADA, id));
 		}
 	
 	}
 	
+	
+	public Cidade buscarOuFalhar(Long id) {
+		return cidadeRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException
+						(String.format(MSG_CIDADE_NAO_ENCONTRADA, id)));
+	}
 	
 	
 }

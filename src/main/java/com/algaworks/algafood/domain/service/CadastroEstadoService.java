@@ -13,6 +13,8 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 @Service
 public class CadastroEstadoService {
 	
+	private static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removido, pois está em uso";
+	private static final String MSG_ESTADO_NAO_ENCONTRADO = "O Estado de id %d, não foi encontrado.";
 	@Autowired
 	private EstadoRepository estadoRepository;
 
@@ -24,13 +26,19 @@ public class CadastroEstadoService {
 		try {
 			estadoRepository.deleteById(id);
 		} catch (EmptyResultDataAccessException e) {
-			throw new EntidadeNaoEncontradaException(String.format("O estado de id %d, não foi encontrada", id));
+			throw new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id));
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new EntidadeEmUsoException(
-					String.format("Estado de código %d não pode ser removido, pois está em uso", id));
+					String.format(MSG_ESTADO_EM_USO, id));
 		}
 	
+	}
+	
+	public Estado buscarOuFalhar(Long id) {
+		return estadoRepository.findById(id)
+				.orElseThrow(() -> new EntidadeNaoEncontradaException
+						(String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
 	}
 	
 	
