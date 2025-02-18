@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpStatus;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -44,6 +45,22 @@ class CadastroCozinhaIT {
 			.body("nome", Matchers.hasItems("Indiana", "Tailandesa"));
 		
 	}
+	
+	
+	@Test
+	public void deveRetornarStatus201_QuandoCadastrarCozinha() {
+		
+		RestAssured.given()
+			.body("{ \"nome\": \"Chinesa\" }")
+			.contentType(ContentType.JSON)
+			.accept(ContentType.JSON)
+		.when()
+			.post()
+		.then()
+			.statusCode(HttpStatus.CREATED.value());
+		
+	}
+	
 	
 	
 }
