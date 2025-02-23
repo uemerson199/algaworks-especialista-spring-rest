@@ -1,5 +1,7 @@
 package com.algaworks.algafood;
 
+import static org.hamcrest.CoreMatchers.equalTo;
+
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,7 +78,33 @@ class CadastroCozinhaIT {
 			.statusCode(HttpStatus.CREATED.value());
 		
 	}
+	 
+	@Test
+	public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
+		RestAssured.given()
+			 .pathParam("cozinhaId", 2)
+		     .accept(ContentType.JSON)
+	    .when()
+		     .get("/{cozinhaId}")
+	    .then()
+		     .statusCode(org.springframework.http.HttpStatus.OK.value())
+		     .body("nome", equalTo("Americana"));
+		     
+		
+	}
 	
+	@Test
+	public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
+		RestAssured.given()
+			 .pathParam("cozinhaId", 100)
+		     .accept(ContentType.JSON)
+	    .when()
+		     .get("/{cozinhaId}")
+	    .then()
+		     .statusCode(HttpStatus.NOT_FOUND.value());
+		     
+		
+	}
 	
 	private void prepararDados() {
 		Cozinha cozinha1 = new Cozinha();
