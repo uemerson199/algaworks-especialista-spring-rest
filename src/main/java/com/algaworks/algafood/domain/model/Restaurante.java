@@ -30,6 +30,7 @@ import com.algaworks.algafood.core.validation.Groups;
 import com.algaworks.algafood.core.validation.Multiplo;
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -62,6 +63,7 @@ public class Restaurante {
 	private BigDecimal taxaFrete;
 
 	//@JsonIgnore
+	@JsonIgnoreProperties(value = "nome", allowGetters = true)
 	@Valid
 	@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)
 	@NotNull
@@ -85,6 +87,7 @@ public class Restaurante {
 	private LocalDateTime dataAtualizacao;
 	
 
+	@JsonIgnore 
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento", 
 	        joinColumns = @JoinColumn(name = "restaurante_id"), 
