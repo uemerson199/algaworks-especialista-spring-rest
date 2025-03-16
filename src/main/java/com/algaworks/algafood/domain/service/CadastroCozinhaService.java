@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.service;
+ package com.algaworks.algafood.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -29,6 +29,8 @@ public class CadastroCozinhaService {
 	public void excluir(Long id) {
 		try {
 			cozinhaRepository.deleteById(id);
+			cozinhaRepository.flush();
+			 
 		} catch (EmptyResultDataAccessException e) {
 			throw new CozinhaNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id));
 		}
