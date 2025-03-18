@@ -1,4 +1,4 @@
-package com.algaworks.algafood.api.controller;
+ package com.algaworks.algafood.api.controller;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -168,9 +168,20 @@ public class RestauranteController {
 		}
 			
 	}
+	
+	
+	@PutMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void ativar(@PathVariable Long restauranteId) {
+		restauranteService.ativar(restauranteId);
+	}
 		
-	
-	
+	@DeleteMapping("/{restauranteId}/ativo")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void desativar(@PathVariable Long restauranteId) {
+		restauranteService.inativar(restauranteId);
+	}
+		
 	
 	
 
