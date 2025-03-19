@@ -182,7 +182,6 @@ public class RestauranteController {
 		restauranteService.inativar(restauranteId);
 	}
 		
-	
-	
+
 
 }
