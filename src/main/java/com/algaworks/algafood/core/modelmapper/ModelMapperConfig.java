@@ -4,12 +4,25 @@ import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.algaworks.algafood.api.model.EnderecoModel;
+import com.algaworks.algafood.domain.model.Endereco;
+
 @Configuration
 public class ModelMapperConfig {
 	
 	@Bean
 	public ModelMapper modelMapper() {
-		return new ModelMapper();
+		ModelMapper modelMapper = new ModelMapper();
+		
+		
+		org.modelmapper.TypeMap<Endereco, EnderecoModel> enderecoToEnderecoModel =
+				modelMapper.createTypeMap(Endereco.class, EnderecoModel.class);
+		
+		enderecoToEnderecoModel.<String>addMapping(
+				enderecoSrc -> enderecoSrc.getCidade().getEstado().getNome(), 
+				 (enderecoModelDest, value) -> enderecoModelDest.getCidade().setNomeEstado(value));
+		
+		return modelMapper;
 	}
 
 
