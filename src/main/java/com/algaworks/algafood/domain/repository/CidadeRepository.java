@@ -6,5 +6,6 @@ import com.algaworks.algafood.domain.model.Cidade;
 
 public interface CidadeRepository extends JpaRepository<Cidade, Long> {
 	
+	
 
 }
