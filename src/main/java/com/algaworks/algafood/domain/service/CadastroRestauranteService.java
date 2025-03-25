@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
+import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
@@ -21,10 +22,13 @@ public class CadastroRestauranteService {
 
 	
 	@Autowired
-	private CadastroCozinhaService cadastroCozinha;
+	private CadastroCozinhaService cadastroCozinhaService;
 	
 	@Autowired
 	private CadastroCidadeService cadastroCidadeService;
+	
+	@Autowired
+	private CadastroFormaPagamentoService cadastroFormaPagamentoService;
 
 	
 	@Transactional
@@ -32,7 +36,7 @@ public class CadastroRestauranteService {
 		Long cozinhaId = restaurante.getCozinha().getId();
 		Long cidadeId = restaurante.getEndereco().getCidade().getId();
 		
-		Cozinha cozinha = cadastroCozinha.buscarOuFalhar(cozinhaId);
+		Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(cozinhaId);
 		Cidade cidade = cadastroCidadeService.buscarOuFalhar(cidadeId);
 		
 //		Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
@@ -71,6 +75,24 @@ public class CadastroRestauranteService {
 		Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
 		
 		restauranteAtual.inativar(); 
+		
+	}
+	
+	@Transactional
+	public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(formaPagamentoId);
+		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.desassociarFormaPagamento(formaPagamento);
+		
+	}
+	
+	@Transactional
+	public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+		Restaurante restaurante = buscarOuFalhar(formaPagamentoId);
+		FormaPagamento formaPagamento = cadastroFormaPagamentoService.buscarOuFalhar(formaPagamentoId);
+		
+		restaurante.addicionarFormapagamento(formaPagamento);
 		
 	}
 	
