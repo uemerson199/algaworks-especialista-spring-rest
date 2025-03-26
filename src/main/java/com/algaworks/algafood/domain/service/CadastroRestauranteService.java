@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 @Service
@@ -22,6 +23,8 @@ public class CadastroRestauranteService {
 	@Autowired
 	private CadastroCozinhaService cadastroCozinha;
 
+	@Autowired
+	private CadastroUsuarioService cadastroUsuario;
 	
 	@Transactional
 	public Restaurante salvar(Restaurante restaurante) {
@@ -69,6 +72,22 @@ public class CadastroRestauranteService {
 	    
 	    restauranteAtual.fechar();
 	} 
+	
+	@Transactional
+	public void desassociarResponsavel(Long restauranteId, Long usuarioId) {
+	    Restaurante restaurante = buscarOuFalhar(restauranteId);
+	    Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+	    
+	    restaurante.removerResponsavel(usuario);
+	}
+
+	@Transactional
+	public void associarResponsavel(Long restauranteId, Long usuarioId) {
+	    Restaurante restaurante = buscarOuFalhar(restauranteId);
+	    Usuario usuario = cadastroUsuario.buscarOuFalhar(usuarioId);
+	    
+	    restaurante.adicionarResponsavel(usuario);
+	}
 	
 
 }
