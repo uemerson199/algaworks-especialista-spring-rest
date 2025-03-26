@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.algaworks.algafood.domain.model.Permissao;
 
-public interface PermisaoRepository extends JpaRepository<Permissao, Long> {
+public interface PermissaoRepository extends JpaRepository<Permissao, Long> {
 
 	
 }
