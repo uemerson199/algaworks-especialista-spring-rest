@@ -56,6 +56,19 @@ public class CadastroRestauranteService {
 						String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
 	}
 
+	@Transactional
+	public void abrir(Long restauranteId) {
+	    Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+	    
+	    restauranteAtual.abrir();
+	}
+
+	@Transactional
+	public void fechar(Long restauranteId) {
+	    Restaurante restauranteAtual = buscarOuFalhar(restauranteId);
+	    
+	    restauranteAtual.fechar();
+	} 
 	
 
 }

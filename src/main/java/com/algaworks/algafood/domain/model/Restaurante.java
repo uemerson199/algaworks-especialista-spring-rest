@@ -39,6 +39,8 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Restaurante {
+	
+	private Boolean aberto = Boolean.FALSE;
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -86,6 +88,15 @@ public class Restaurante {
 	
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();    
+	
+
+	public void abrir() {
+	    setAberto(true);
+	}
+
+	public void fechar() {
+	    setAberto(false);
+	}     
 	
 	
 }
