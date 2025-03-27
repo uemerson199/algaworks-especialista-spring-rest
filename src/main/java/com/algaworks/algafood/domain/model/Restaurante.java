@@ -41,8 +41,6 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Restaurante {
-	
-	private Boolean aberto = Boolean.FALSE;
 
 	@EqualsAndHashCode.Include
 	@Id
@@ -81,6 +79,10 @@ public class Restaurante {
 	@UpdateTimestamp
 	@Column(nullable = false, columnDefinition = "datetime")
 	private OffsetDateTime dataAtualizacao;
+	
+	private Boolean ativo = Boolean.TRUE;
+	
+	private Boolean aberto = Boolean.FALSE;
 	 
 	@ManyToMany
 	@JoinTable(name = "restaurante_forma_pagamento", 
@@ -97,7 +99,14 @@ public class Restaurante {
 	@OneToMany(mappedBy = "restaurante")
 	private List<Produto> produtos = new ArrayList<>();    
 	
-
+	public void ativar() {
+		setAtivo(true);
+	}
+	
+	public void inativar() {
+		setAtivo(false);
+	}
+	
 	public void abrir() {
 	    setAberto(true);
 	}

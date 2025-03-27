@@ -26,6 +26,8 @@ public class CadastroUsuarioService {
 	@Autowired
 	EntityManager entityManager;
 	
+	
+	
 	@Transactional
 	public Usuario salvar(Usuario usuario) {
 		entityManager.detach(usuario);
