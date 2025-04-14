@@ -45,23 +45,6 @@ public class RestauranteController {
 	@Autowired
 	private RestauranteInputDisassembler restauranteInputDisassembler;
 	
-//	@GetMapping 
-//	public MappingJacksonValue listar(@RequestParam(required = false) String projecao) {
-//		List<Restaurante> restaurantes = restaurauranteRepository.findAll();
-//		List<RestauranteModel> restauranteModel = restauranteModelAssembler.toCollectionModel(restaurantes);
-//		
-//		MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restauranteModel);
-//		
-//		restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
-//		
-//		if ("apenas-nome".equals(projecao)) {
-//			restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
-//		} else if ("completo".equals(projecao)) {
-//			restaurantesWrapper.setSerializationView(null);
-//		}
-//		
-//		return restaurantesWrapper;
-//	}
 
 	@JsonView(RestauranteView.Resumo.class)
 	@GetMapping
@@ -76,14 +59,6 @@ public class RestauranteController {
 		return listar();
 		
 	}
-//	 
-//	@JsonView(RestauranteView.ApenasNome.class)
-//	@GetMapping(params = "projecao=apenas-nome")
-//	public List<RestauranteModel> listarApenasNome() {
-//		return listar();
-//		
-//	}
-	 
 	
 	@GetMapping(value = "/{id}")
 	public RestauranteModel buscar(@PathVariable Long id) {
