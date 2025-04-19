@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,11 +17,14 @@ import com.algaworks.algafood.api.assembler.PedidoModelAssembler;
 import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
+
+import lombok.experimental.var;
 
 @RestController
 @RequestMapping(value = "/pedidos")
@@ -41,6 +45,9 @@ public class PedidoController {
     @GetMapping
     public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
             @PageableDefault(size = 10) Pageable pageable) {
+    	
+    	pageable = traduzirPageable(pageable);
+    	
         Page<Pedido> pedidosPage = pedidoRepository.findAll(
                 PedidoSpecs.usandoFiltro(filtro), pageable);
         
@@ -60,4 +67,16 @@ public class PedidoController {
         
         return pedidoModelAssembler.toModel(pedido);
     }            
+    
+    
+    private Pageable traduzirPageable(Pageable apiPageable) {
+    	var mapeamento = Map.of(
+    		  "codigo", "codigo",
+    		  "restaurante.nome", "restaurante.nome",
+    		  "cliente.nome", "cliente.nome",
+    		  "valorTotal", "valorTotal"
+    		);
+    	
+    	return PageableTranslator.translate(apiPageable, mapeamento);
+    }
 }         
