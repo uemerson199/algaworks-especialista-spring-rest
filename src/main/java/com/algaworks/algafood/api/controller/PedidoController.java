@@ -53,14 +53,7 @@ public class PedidoController {
         return pedidosResumoModelPage;
     }
     
-    
-//    @GetMapping
-//    public List<PedidoResumoModel> listar() {
-//        List<Pedido> todosPedidos = pedidoRepository.findAll();
-//        
-//        return pedidoResumoModelAssembler.toCollectionModel(todosPedidos);
-//    }
-//    
+     
     @GetMapping("/{codigoPedido}")
     public PedidoModel buscar(@PathVariable String codigoPedido) {
         Pedido pedido = emissaoPedido.buscarOuFalhar(codigoPedido);
