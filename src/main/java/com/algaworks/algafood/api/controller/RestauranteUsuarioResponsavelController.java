@@ -1,4 +1,4 @@
-package com.algaworks.algafood.domain.service;
+package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.algaworks.algafood.api.assembler.UsuarioModelAssembler;
 import com.algaworks.algafood.api.model.UsuarioModel;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @RestController
 @RequestMapping(value = "/restaurantes/{restauranteId}/responsaveis")
